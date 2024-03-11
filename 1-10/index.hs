@@ -1,5 +1,6 @@
 
 import Data.Bifunctor
+import Data.ByteString (count)
 
 -- Problem 1
 myLast :: Eq a => [a] -> a
@@ -30,14 +31,17 @@ length'' xs = go xs 0
     go (x:xs) result = go xs (result + 1)
 
 -- Problem 5
--- Reverse
+reverse' :: [a] -> [a]
+reverse' [] = []
+reverse' (x:xs) = reverse' xs ++ [x]
 
 -- Problem 6
--- Palindrome
-
-data NestedList a = Elem a | List [NestedList a]
+isPalindrome :: [Char] -> Bool
+isPalindrome a = reverse' a == a
 
 -- Problem 7
+data NestedList a = Elem a | List [NestedList a]
+
 toFlat :: NestedList a -> [a]
 toFlat (Elem a) = [a]
 toFlat (List a) = foldr (\elem acc -> toFlat elem ++ acc) [] a
@@ -62,9 +66,7 @@ compress'' (x:xs@(y:_))
   | otherwise = x : compress'' xs
 compress'' xs = xs
 
-
 -- Problem 9
-
 type Group = String
 type Rest = String
 
@@ -79,7 +81,9 @@ pack' :: String -> [String]
 pack' "" = []
 pack' str = fst (group' str) : pack' (snd (group' str))
 
+-- Problem 10
+encode :: String -> [(Int, Char)]
+encode str = fmap (\grouped -> (length grouped, head grouped)) (pack' str)
+
 main :: IO ()
--- main = print (toFlat (List [Elem 1, List [Elem 2, List [Elem 3, Elem 4], Elem 5]]))
-main = print (pack' ['a', 'a', 'a', 'a', 'b', 'c', 'c', 'a', 
-             'a', 'd', 'e', 'e', 'e', 'e'])
+main = print (encode ['a', 'a', 'a', 'a', 'b', 'c', 'c', 'a', 'a', 'd', 'e', 'e', 'e', 'e'])
