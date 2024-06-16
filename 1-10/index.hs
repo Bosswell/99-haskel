@@ -106,5 +106,16 @@ decodeModified xs = concat $ map unwrap xs
     unwrap (Single b) = [b]
     unwrap (Multiple a b) = replicate' a b
 
+-- Problem 14
+dupli :: [a] -> [a]
+dupli [] = []
+dupli (x:xs) = x:x:dupli(xs)
+
+-- Problem 15
+repli' :: [a] -> Int -> [a]
+repli' [] _ = []
+repli' (x:xs) n = replicate' n x ++ repli' xs n
+
+
 main :: IO ()
-main = print (decodeModified $ encodeModified ['a', 'a', 'a', 'a', 'b', 'c', 'c', 'a', 'a', 'd', 'e', 'e', 'e', 'e'])
+main = print (repli' [1,2,3] 3)
