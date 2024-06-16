@@ -85,5 +85,26 @@ pack' str = fst (group' str) : pack' (snd (group' str))
 encode :: String -> [(Int, Char)]
 encode str = fmap (\grouped -> (length grouped, head grouped)) (pack' str)
 
+-- Problem 11
+data ListItem a = Single a | Multiple Int a
+    deriving (Show)
+
+encodeModified :: String -> [ListItem Char]
+encodeModified = map encodeGroup . encode
+  where 
+    encodeGroup (1, b) = Single b
+    encodeGroup (a, b) = Multiple a b
+
+-- Problem 12
+replicate' :: Int -> a -> [a]
+replicate' 1 elem = [elem]
+replicate' replicatesCount elem = elem:(replicate' (replicatesCount - 1)  elem)
+
+decodeModified :: [ListItem Char] -> String
+decodeModified xs = concat $ map unwrap xs
+  where
+    unwrap (Single b) = [b]
+    unwrap (Multiple a b) = replicate' a b
+
 main :: IO ()
-main = print (encode ['a', 'a', 'a', 'a', 'b', 'c', 'c', 'a', 'a', 'd', 'e', 'e', 'e', 'e'])
+main = print (decodeModified $ encodeModified ['a', 'a', 'a', 'a', 'b', 'c', 'c', 'a', 'a', 'd', 'e', 'e', 'e', 'e'])
