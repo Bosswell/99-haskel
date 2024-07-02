@@ -98,10 +98,10 @@ encodeModified = map encodeGroup . encode
 -- Problem 12
 replicate' :: Int -> a -> [a]
 replicate' 1 elem = [elem]
-replicate' replicatesCount elem = elem:(replicate' (replicatesCount - 1)  elem)
+replicate' replicatesCount elem = elem:replicate' (replicatesCount - 1)  elem
 
 decodeModified :: [ListItem Char] -> String
-decodeModified xs = concat $ map unwrap xs
+decodeModified = concatMap unwrap
   where
     unwrap (Single b) = [b]
     unwrap (Multiple a b) = replicate' a b
@@ -116,6 +116,5 @@ repli' :: [a] -> Int -> [a]
 repli' [] _ = []
 repli' (x:xs) n = replicate' n x ++ repli' xs n
 
-
 main :: IO ()
-main = print (repli' [1,2,3] 3)
+main = print (repli' [1, 2] 3)
