@@ -25,7 +25,15 @@ slice (_:xs) lowerIndex upperIndex
     
 
 -- Problem 19
--- rotate :: String -> Int -> String
+rotate :: String -> Int -> String
+rotate word val = (\(a, b) -> b ++ a) (fn word val)
+    where 
+        fn :: String -> Int -> (String, String)
+        fn (x:xs) val
+            | length xs == val = ("", xs)
+            | length xs < val = (x:xs, "")
+            | otherwise = first ([x]++) (fn xs val)
+
 
 main :: IO ()
-main = print (slice ['a','b','c','d','e','f','g','h','i','k'] 3 7)
+main = print (rotate ['a','b','c','d','e','f','g','h','i','k'] 20)
